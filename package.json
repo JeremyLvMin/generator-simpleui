@@ -1,6 +1,6 @@
 {
     "name": "generator-simpleui",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "description": "base UI framework",
     "files": ["app"],
     "author": "Jeremy",
@@ -11,5 +11,5 @@
         "chalk": "^1.0.0",
         "yosay": "^1.0.2"
     },
-    "repository": ""
+    "repository": "https://github.com/JeremyLvMin/generator-simpleui.git"
 }

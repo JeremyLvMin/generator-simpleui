@@ -6,7 +6,8 @@ var gulp = require('gulp'),
     rename = require("gulp-rename"),
     spritesmith = require('gulp.spritesmith'),
     browserSync = require('browser-sync').create(),
-    replace = require('gulp-replace');
+    replace = require('gulp-replace'),
+    minimist = require('minimist');
 
 gulp.task('style', function() {
     return gulp.src('./Simple-UI-template/sass/style.scss')
@@ -15,7 +16,6 @@ gulp.task('style', function() {
             })
             .on('error', sass.logError))
         // .pipe(cssmin())
-        .pipe(replace('sprite.png', '../images/sprite.png'))
         .pipe(gulp.dest('./dist/css'))
 });
 
@@ -28,20 +28,28 @@ gulp.task('html', function() {
         .pipe(gulp.dest('./dist'))
 });
 
+
+var spriteDefOpt = {
+    string: 'name',
+    default: { env: process.env.NODE_ENV || 'sprite' }
+};
+
+var options = minimist(process.argv.slice(2), spriteDefOpt);
+
 var spritesMithConfig = {
-    imgName: 'sprite.png',
-    cssName: '_sprite.scss',
+    imgName: ''+options.name+'.png',
+    cssName: '_'+options.name+'.scss',
     cssFormat: 'scss',
     algorithm: 'binary-tree',
+    imgPath: '../images/'+options.name+'.png',
     padding: 8
 }
 
 gulp.task('sprite', function() {
-    var spriteData = gulp.src('./Simple-UI-template/images/*.png').pipe(spritesmith(spritesMithConfig));
+    var spriteData = gulp.src('./Simple-UI-template/images/'+options.name+'/*.png').pipe(spritesmith(spritesMithConfig));
     spriteData.img.pipe(gulp.dest("./dist/images/"));
     spriteData.css.pipe(gulp.dest("./Simple-UI-template/sass/module/"));
-})
-
+});
 
 gulp.task('browser-sync', function() {
     browserSync.init({
