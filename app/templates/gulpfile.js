@@ -30,8 +30,8 @@ gulp.task('html', function() {
 
 
 var spriteDefOpt = {
-    string: 'name',
-    default: { env: process.env.NODE_ENV || 'sprite' }
+      string: 'name',
+      default: { name: 'sprite' }
 };
 
 var options = minimist(process.argv.slice(2), spriteDefOpt);
@@ -53,7 +53,7 @@ gulp.task('sprite', function() {
 
 gulp.task('browser-sync', function() {
     browserSync.init({
-        files: "**",
+        files: "./dist/**/*",
         server: {
             baseDir: "./dist"
         },
@@ -61,11 +61,10 @@ gulp.task('browser-sync', function() {
         notify: true, //刷新是否提示
         open: true //是否自动打开页面
     });
-
-    gulp.watch('./Simple-UI-template/**/*.html', ['html']);
-    gulp.watch(['./Simple-UI-template/**/*.scss'], ['style']);
 });
 
 gulp.task('default', function() {
     gulp.run('browser-sync');
+    gulp.watch('./Simple-UI-template/**/*.html', ['html']);
+    gulp.watch(['./Simple-UI-template/**/*.scss'], ['style']);
 });
